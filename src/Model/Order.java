@@ -37,6 +37,9 @@ public class Order {
     public List<OrderItem> getOrderItems() {
         return orderItems;
     }
+    public void addOrderItemToOrderItemsList(OrderItem orderItem){
+        orderItems.add(orderItem);
+    }
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
