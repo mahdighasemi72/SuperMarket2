@@ -3,11 +3,9 @@ package Controller;
 import Model.Good;
 import Model.Order;
 import Model.OrderItem;
+import Model.OrderStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SupermarketController {
 
@@ -68,6 +66,39 @@ public class SupermarketController {
             }
         }
         return requestedGood;
+    }
+
+    public void chrckoutOrder(Order order, boolean isCash){
+        order.setCash(isCash);
+        for (OrderItem item : order.getOrderItems()) {
+            if (item.getCount() != 0){
+                item.getGood().setCount(item.getGood().getCount() - item.getCount());
+            } else if (item.getAmount() != 0) {
+                item.getGood().setAmount(item.getGood().getAmount() - item.getAmount());
+            }
+        }
+        order.setOrderStatus(OrderStatus.DONE);
+    }
+
+    public int getTotalSales(String option){
+        return orders.stream().filter(order -> {
+            if (option == null)
+                return true;
+            if (option.equalsIgnoreCase("cash")){
+                return order.isCash();
+            } else if (option.equalsIgnoreCase("credit")){
+                return !order.isCash();
+            }
+            return true;
+        })
+                .map(order -> order.getTotalProfit())
+                .reduce((a,b) -> a+b)
+                .orElse(0);
+    }
+
+    public int getTotalProfit(){
+        Optional<Integer> sum = orders.stream().map(order -> order.getTotalProfit()).reduce((a,b) -> a + b);
+        return sum.orElse(0);
     }
 
     public static class ItemUnavailableException extends Exception{
