@@ -20,6 +20,11 @@ public class SupermarketController {
         return orders;
     }
     private static SupermarketController instance = new SupermarketController();
+
+    public static SupermarketController getInstance() {
+        return instance;
+    }
+
     private SupermarketController() {
         goods = new HashMap<>();
         orders = new ArrayList<>();
