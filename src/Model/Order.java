@@ -60,4 +60,15 @@ public class Order {
         }
         return totalProfit;
     }
+    public int getTotalPrice(){
+        int totalPrice = 0;
+        for (OrderItem item : orderItems) {
+            if (item.getCount() != 0){
+                totalPrice += item.getCount()*item.getGood().getSellPrice();
+            }else if (item.getAmount() != 0){
+                totalPrice += item.getAmount()*item.getGood().getSellPrice();
+            }
+        }
+        return totalPrice;
+    }
 }

@@ -12,8 +12,8 @@ public class SupermarketController {
     private Map<String,Good> goods;
     private List<Order> orders;
 
-    public Map<String, Good> getGoods() {
-        return goods;
+    public Collection<Good> getGoods() {
+        return goods.values();
     }
 
     public List<Order> getOrders() {
@@ -73,7 +73,7 @@ public class SupermarketController {
         return requestedGood;
     }
 
-    public void chrckoutOrder(Order order, boolean isCash){
+    public void checkoutOrder(Order order, boolean isCash){
         order.setCash(isCash);
         for (OrderItem item : order.getOrderItems()) {
             if (item.getCount() != 0){
@@ -96,7 +96,7 @@ public class SupermarketController {
             }
             return true;
         })
-                .map(order -> order.getTotalProfit())
+                .map(order -> order.getTotalPrice())
                 .reduce((a,b) -> a+b)
                 .orElse(0);
     }
